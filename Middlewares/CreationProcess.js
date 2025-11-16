@@ -10,18 +10,6 @@ module.exports = function validateRoleCreation(req, res, next) {
     }
 
 
-    if(!description){
-        return res.status(400).json({
-            message:"Description is required",
-        })
-    }
-
-    if(!imageUrl){
-        return res.status(400).json({
-            message:"Image is required",
-        })
-    }
-
 
     next();
 }
