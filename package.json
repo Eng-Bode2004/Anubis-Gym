@@ -1,0 +1,25 @@
+{
+  "name": "specialization-services",
+  "version": "3.0.0",
+  "description": "Specialization service for Anubis Gym",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Eng-Bode2004/Anubis-Gym.git"
+  },
+  "author": "Abdelrahman Ashraf",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Eng-Bode2004/Anubis-Gym/issues"
+  },
+  "homepage": "https://github.com/Eng-Bode2004/Anubis-Gym#readme",
+  "dependencies": {
+    "dotenv": "^17.2.3",
+    "express": "^5.1.0",
+    "mongoose": "^8.19.4",
+    "nodemon": "^3.1.11"
+  }
+}
