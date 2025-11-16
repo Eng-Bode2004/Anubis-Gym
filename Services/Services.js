@@ -1,0 +1,47 @@
+const Role_Schema = require('../Models/Model')
+const mongoose = require("mongoose");
+
+class RoleService {
+
+    async createRole(roleData) {
+        try {
+
+            const {name,description,imageUrl}= roleData
+
+            // Check if Role exists
+            const existRole = await Role_Schema.findOne({ name });
+
+            if(existRole) {
+                throw new Error("Role already exist!");
+            }
+
+            // Creation Role Process
+            const newRole = await Role_Schema.create({
+                name:name,
+                description:description,
+                imageUrl:imageUrl,
+            })
+
+            return newRole;
+
+
+
+
+        }catch (error) {
+            throw new Error(error);
+        }
+    }
+
+
+
+
+
+
+
+
+
+
+
+}
+
+module.exports = new RoleService;
