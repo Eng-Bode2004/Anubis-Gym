@@ -87,6 +87,23 @@ class RoleController {
         }
     }
 
+    async getRolesExcept(req, res) {
+        try {
+            const roles = await Role_Services.getRolesExcept(req.params.id);
+
+            res.status(200).json({
+                success: true,
+                roles
+            });
+
+        } catch (error) {
+            res.status(400).json({
+                message: error.message
+            });
+        }
+    }
+
+
 
 
 }

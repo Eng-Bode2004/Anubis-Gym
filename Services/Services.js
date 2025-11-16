@@ -80,6 +80,13 @@ class RoleService {
         }
     }
 
+    async getRolesExcept(excludedId) {
+        try {
+            return await Role_Schema.find({ _id: { $ne: excludedId } });
+        } catch (error) {
+            throw new Error(error.message);
+        }
+    }
 
 
 
