@@ -15,5 +15,6 @@ router.post('/',CreationProcess,RoleController.createRole);
 router.get('/', RoleController.getAllRoles);                   // Get All
 router.get('/:id', RoleController.getRoleById);                // Get By ID
 router.delete('/:id', RoleController.deleteRole);              // Delete
+router.put('/:id', RoleController.updateRole);
 
 module.exports = router;

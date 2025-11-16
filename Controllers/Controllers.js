@@ -70,6 +70,24 @@ class RoleController {
         }
     }
 
+    async updateRole(req, res) {
+        try {
+            const updatedRole = await Role_Services.updateRole(req.params.id, req.body);
+
+            res.status(200).json({
+                success: true,
+                message: "Role updated successfully",
+                role: updatedRole
+            });
+
+        } catch (error) {
+            res.status(400).json({
+                message: error.message
+            });
+        }
+    }
+
+
 
 }
 

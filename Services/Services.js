@@ -62,8 +62,23 @@ class RoleService {
     }
 
 
+    async updateRole(roleId, updatedData) {
+        try {
+            const role = await Role_Schema.findById(roleId);
+            if (!role) throw new Error("Role not found");
 
+            // Update allowed fields
+            role.name = updatedData.name || role.name;
+            role.description = updatedData.description || role.description;
+            role.imageUrl = updatedData.imageUrl || role.imageUrl;
 
+            const updatedRole = await role.save();
+            return updatedRole;
+
+        } catch (error) {
+            throw new Error(error.message);
+        }
+    }
 
 
 
