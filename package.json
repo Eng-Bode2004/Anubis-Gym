@@ -1,0 +1,20 @@
+{
+  "name": "images-services",
+  "version": "3.0.0",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node app.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Eng-Bode2004/Anubis-Gym.git"
+  },
+  "author": "Abdelrhaman Ashraf",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Eng-Bode2004/Anubis-Gym/issues"
+  },
+  "homepage": "https://github.com/Eng-Bode2004/Anubis-Gym#readme",
+  "description": ""
+}
