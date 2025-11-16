@@ -27,6 +27,49 @@ class RoleController {
 
     }
 
+    async getAllRoles(req, res) {
+        try {
+            const roles = await Role_Services.getAllRoles();
+            res.status(200).json({
+                success: true,
+                roles
+            });
+        } catch (error) {
+            res.status(400).json({
+                message: error.message
+            });
+        }
+    }
+
+    async getRoleById(req, res) {
+        try {
+            const role = await Role_Services.getRoleById(req.params.id);
+            res.status(200).json({
+                success: true,
+                role
+            });
+        } catch (error) {
+            res.status(404).json({
+                message: error.message
+            });
+        }
+    }
+
+    async deleteRole(req, res) {
+        try {
+            const deleted = await Role_Services.deleteRole(req.params.id);
+            res.status(200).json({
+                success: true,
+                message: "Role deleted successfully",
+                role: deleted
+            });
+        } catch (error) {
+            res.status(404).json({
+                message: error.message
+            });
+        }
+    }
+
 
 }
 

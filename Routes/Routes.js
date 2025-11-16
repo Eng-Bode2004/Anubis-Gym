@@ -12,5 +12,8 @@ const router = express.Router();
 
 // Routes
 router.post('/',CreationProcess,RoleController.createRole);
+router.get('/', RoleController.getAllRoles);                   // Get All
+router.get('/:id', RoleController.getRoleById);                // Get By ID
+router.delete('/:id', RoleController.deleteRole);              // Delete
 
 module.exports = router;

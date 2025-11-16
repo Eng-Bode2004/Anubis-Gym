@@ -33,6 +33,34 @@ class RoleService {
     }
 
 
+    async getAllRoles() {
+        try {
+            return await Role_Schema.find();
+        } catch (error) {
+            throw new Error(error.message);
+        }
+    }
+
+    async getRoleById(roleId) {
+        try {
+            const role = await Role_Schema.findById(roleId);
+            if (!role) throw new Error("Role not found");
+            return role;
+        } catch (error) {
+            throw new Error(error.message);
+        }
+    }
+
+    async deleteRole(roleId) {
+        try {
+            const deleted = await Role_Schema.findByIdAndDelete(roleId);
+            if (!deleted) throw new Error("Role not found");
+            return deleted;
+        } catch (error) {
+            throw new Error(error.message);
+        }
+    }
+
 
 
 
