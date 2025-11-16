@@ -1,0 +1,19 @@
+{
+  "name": "users-services",
+  "version": "3.0.0",
+  "description": "user Service for Anuubis gym",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Eng-Bode2004/Anubis-Gym.git"
+  },
+  "author": "Abdelrahman Ashraf",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Eng-Bode2004/Anubis-Gym/issues"
+  },
+  "homepage": "https://github.com/Eng-Bode2004/Anubis-Gym#readme"
+}
