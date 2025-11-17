@@ -9,8 +9,8 @@ const ImagesControllers = require('../Controllers/ImagesControllers');
 const specializations = require('../Middlewares/Multer-Specializations-Images'); // parser
 router.post('/specialization', specializations.single('image'), ImagesControllers.uploadPhoto);
 
-const posts = require('../Middlewares/Multer-Posts'); // parser
-router.post('/posts', posts.single('image'), ImagesControllers.uploadPhoto);
+const trainer_profile = require('../Middlewares/Multer-TrainerProfile-Image'); // parser
+router.post('/trainer-profile', trainer_profile.single('image'), ImagesControllers.uploadPhoto);
 
 
 

@@ -5,7 +5,7 @@ const cloudinary = require('../Config/Cloudinary');
 const storage = new CloudinaryStorage({
     cloudinary: cloudinary,
     params:{
-        folder:"Anubis/Home/Trainee/Events",
+        folder:"Anubis/Trainers/Profile-Image",
         allowed_formats: ['jpg', 'png', 'jpeg'],
     }
 })
