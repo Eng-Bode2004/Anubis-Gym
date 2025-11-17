@@ -1,111 +1,60 @@
-const Role_Services = require('../Services/Services')
+const WorkoutPlanService = require('../Services/Services');
 
-class RoleController {
+class WorkoutPlanController {
 
-    async createRole(req, res) {
-
+    async createWorkoutPlan(req, res) {
         try {
-
-            const roleData = req.body;
-            const newRole = await Role_Services.createRole(roleData);
-            res.status(201).json({
-                success: true,
-                message: 'Role created successfully',
-                role: newRole
-            });
-
-        }
-
-        catch (error) {
-            res.status(400).json({
-                error: error.message,
-                statusCode:400,
-                message:"Error in creating Role",
-            });
-        }
-
-
-    }
-
-    async getAllRoles(req, res) {
-        try {
-            const roles = await Role_Services.getAllRoles();
-            res.status(200).json({
-                success: true,
-                roles
-            });
+            const plan = await WorkoutPlanService.createWorkoutPlan(req.body);
+            res.status(201).json({ success: true, data: plan });
         } catch (error) {
-            res.status(400).json({
-                message: error.message
-            });
+            res.status(400).json({ success: false, message: error.message });
         }
     }
 
-    async getRoleById(req, res) {
+    async getAllWorkoutPlans(req, res) {
         try {
-            const role = await Role_Services.getRoleById(req.params.id);
-            res.status(200).json({
-                success: true,
-                role
-            });
+            const plans = await WorkoutPlanService.getAllWorkoutPlans();
+            res.status(200).json({ success: true, data: plans });
         } catch (error) {
-            res.status(404).json({
-                message: error.message
-            });
+            res.status(400).json({ success: false, message: error.message });
         }
     }
 
-    async deleteRole(req, res) {
+    async getWorkoutPlanById(req, res) {
         try {
-            const deleted = await Role_Services.deleteRole(req.params.id);
-            res.status(200).json({
-                success: true,
-                message: "Role deleted successfully",
-                role: deleted
-            });
+            const plan = await WorkoutPlanService.getWorkoutPlanById(req.params.id);
+            res.status(200).json({ success: true, data: plan });
         } catch (error) {
-            res.status(404).json({
-                message: error.message
-            });
+            res.status(404).json({ success: false, message: error.message });
         }
     }
 
-    async updateRole(req, res) {
+    async updateWorkoutPlan(req, res) {
         try {
-            const updatedRole = await Role_Services.updateRole(req.params.id, req.body);
-
-            res.status(200).json({
-                success: true,
-                message: "Role updated successfully",
-                role: updatedRole
-            });
-
+            const updated = await WorkoutPlanService.updateWorkoutPlan(req.params.id, req.body);
+            res.status(200).json({ success: true, data: updated });
         } catch (error) {
-            res.status(400).json({
-                message: error.message
-            });
+            res.status(400).json({ success: false, message: error.message });
         }
     }
 
-    async getRolesExcept(req, res) {
+    async deleteWorkoutPlan(req, res) {
         try {
-            const roles = await Role_Services.getRolesExcept(req.params.id);
-
-            res.status(200).json({
-                success: true,
-                roles
-            });
-
+            const deleted = await WorkoutPlanService.deleteWorkoutPlan(req.params.id);
+            res.status(200).json({ success: true, message: 'Workout plan deleted', data: deleted });
         } catch (error) {
-            res.status(400).json({
-                message: error.message
-            });
+            res.status(404).json({ success: false, message: error.message });
         }
     }
 
-
-
-
+    async getPlansByTrainer(req, res) {
+        try {
+            const plans = await WorkoutPlanService.getPlansByTrainer(req.params.trainer_id);
+            res.status(200).json({ success: true, data: plans });
+        } catch (error) {
+            res.status(400).json({ success: false, message: error.message });
+        }
+    }
 }
 
-module.exports = new RoleController();
+module.exports = new WorkoutPlanController();

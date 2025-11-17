@@ -1,24 +1,38 @@
-const mongoose =require('mongoose')
+const mongoose = require('mongoose');
 
-const Role_Schema = new mongoose.Schema({
-
-
-    name:{
-        type:String,
-        required:true,
-        unique:true,
+const workoutPlans_Schema = new mongoose.Schema({
+    trainer_id: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'trainer-Profile',
     },
-
-
-    description:{
-        type:String,
+    name: {
+        type: String,
+        required: true,
     },
-
-    imageUrl:{
-        type:String,
+    difficulty_level: {
+        type: String,
+    },
+    duration_weeks: {
+        type: Number,
+    },
+    is_public: {
+        type: Boolean,
+        default: true, // بشكل افتراضي العامة
+    },
+    goal_type: {
+        type: String,
+    },
+    description: {
+        type: String,
+    },
+    price: {               // السعر
+        type: Number,
+        default: 0,        // 0 يعني مجانية
+    },
+    is_paid: {             // هل الخطة مدفوعة؟
+        type: Boolean,
+        default: false,
     }
+}, { timestamps: true });
 
-
-})
-
-module.exports = new mongoose.model('Role',Role_Schema);
+module.exports = mongoose.model('workoutPlans', workoutPlans_Schema);
