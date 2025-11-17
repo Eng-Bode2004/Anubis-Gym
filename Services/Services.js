@@ -1,20 +1,22 @@
-const TrainerProfile_Schema = require('../Models/Model');
+const Trainer_Profile_Model = require('../Models/TrainerProfile_Model');
+const Specialization_Model = require('../Models/Specialization_Model');
 
 class Trainer_Profile_Services {
 
     async createTrainerProfile(data) {
         try {
-            const { name, specialization, experience_years } = data;
-            const { first_name, middle_name, last_name } = name;
+            const { name, specialization, experience_years, profile_image } = data;
+            const { first_name, middle_name, last_name } = name
 
-            const newTrainer = new TrainerProfile_Schema({
+            const newTrainer = new Trainer_Profile_Model({
                 name: {
                     first_name: first_name.trim(),
-                    middle_name: middle_name ? middle_name.trim() : undefined,
+                    middle_name: middle_name?.trim() || null,
                     last_name: last_name.trim()
                 },
                 specialization,
-                experience_years
+                experience_years,
+                profile_image
             });
 
             await newTrainer.save();
@@ -26,52 +28,63 @@ class Trainer_Profile_Services {
     }
 
     async getTrainerProfile(id) {
-        try {
-            const trainer = await TrainerProfile_Schema.findById(id)
-                .populate("specialization", "name description")
-                .populate("trainees", "name age gender");
+        const trainer = await Trainer_Profile_Model.findById(id)
 
-            if (!trainer) throw new Error("Trainer profile not found");
-
-            return trainer;
-
-        } catch (err) {
-            throw new Error(err.message);
-        }
+        if (!trainer) throw new Error("Trainer not found");
+        return trainer;
     }
 
     async getAllTrainers() {
-        try {
-            return await TrainerProfile_Schema.find()
-                .populate("specialization", "name description");
-        } catch (err) {
-            throw new Error(err.message);
-        }
+        return await Trainer_Profile_Model.find()
     }
 
     async updateTrainerName(id, nameData) {
-        try {
-            const { first_name, middle_name, last_name } = nameData;
+        const { first_name, middle_name, last_name } = nameData;
 
-            const updated = await TrainerProfile_Schema.findByIdAndUpdate(
-                id,
-                {
-                    $set: {
-                        "name.first_name": first_name.trim(),
-                        "name.middle_name": middle_name ? middle_name.trim() : undefined,
-                        "name.last_name": last_name.trim()
-                    }
-                },
+        const updated = await Trainer_Profile_Model.findByIdAndUpdate(
+            id,
+            {
+                $set: {
+                    "name.first_name": first_name.trim(),
+                    "name.middle_name": middle_name?.trim() || null,
+                    "name.last_name": last_name.trim()
+                }
+            },
+            { new: true }
+        );
+
+        if (!updated) throw new Error("Trainer not found");
+        return updated;
+    }
+
+    async updateFullTrainerProfile(trainerId, data) {
+        try {
+            const {
+                specialization,
+                experience_years,
+                profile_image,
+            } = data;
+
+            // Check trainer exists
+            const trainer = await Trainer_Profile_Model.findById(trainerId);
+            if (!trainer) throw new Error("Trainer not found");
+
+            const updateData = {};
+
+            const updatedTrainer = await Trainer_Profile_Model.findByIdAndUpdate(
+                trainerId,
+                { $set: updateData },
                 { new: true }
             );
 
-            if (!updated) throw new Error("Trainer not found");
-            return updated;
+            return updatedTrainer;
 
         } catch (err) {
             throw new Error(err.message);
         }
     }
+
+
 }
 
 module.exports = new Trainer_Profile_Services();

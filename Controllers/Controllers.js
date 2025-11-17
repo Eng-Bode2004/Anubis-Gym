@@ -76,6 +76,31 @@ class Trainer_Profile_Controllers {
             });
         }
     }
+
+    async updateFullTrainerProfile(req, res) {
+        try {
+            const { trainer_id } = req.params;
+            const data = req.body;
+
+            const updatedTrainer = await Trainer_Profile_Services.updateFullTrainerProfile(
+                trainer_id,
+                data
+            );
+
+            res.status(200).json({
+                success: true,
+                message: "Trainer profile updated successfully",
+                data: updatedTrainer
+            });
+
+        } catch (err) {
+            res.status(400).json({
+                success: false,
+                error: err.message
+            });
+        }
+    }
+
 }
 
 module.exports = new Trainer_Profile_Controllers();

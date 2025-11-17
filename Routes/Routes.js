@@ -12,4 +12,6 @@ router.get('/', Trainer_Controller.getAllTrainers);
 
 router.put('/update-name/:trainer_id', Trainer_Controller.updateTrainerName);
 
+router.put('/update/:trainer_id', Trainer_Controller.updateFullTrainerProfile);
+
 module.exports = router;
