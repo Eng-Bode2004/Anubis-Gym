@@ -11,6 +11,6 @@ app.use(express.json()); // Middleware to parse JSON
 
 // Users Routes //
 const Role_Routes = require('./Routes/Routes');
-app.use('/api/v3/roles', Role_Routes);
+app.use('/api/v3/workout-plans', Role_Routes);
 
 app.listen(PORT, () => console.log(`Server is running on port ${PORT}`));
