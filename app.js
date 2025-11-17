@@ -2,6 +2,7 @@ require('dotenv').config();
 
 const DataBase = require('./Config/DataBase');
 const express = require('express');
+const cors = require('cors');
 
 // Set Up Port and Make Server listen To requests
 const app = express();
@@ -12,5 +13,12 @@ app.use(express.json()); // Middleware to parse JSON
 // Users Routes //
 const TrainerProfile_Routes = require('./Routes/Routes');
 app.use('/api/v3/trainer_profile', TrainerProfile_Routes);
+
+// ✅ حل مشكلة CORS
+app.use(cors({
+    origin: '*',
+    methods: ['GET', 'POST', 'PUT', 'DELETE'],
+    credentials: true
+}));
 
 app.listen(PORT, () => console.log(`Server is running on port ${PORT}`));
