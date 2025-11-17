@@ -16,6 +16,10 @@ const TrainerProfileSchema = new mongoose.Schema({
         }
     },
 
+    profile_image: {
+        type: String,
+    },
+
     isVerified: {
         type: Boolean,
         default: false
