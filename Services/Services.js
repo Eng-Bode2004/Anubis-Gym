@@ -83,6 +83,21 @@ class Trainer_Profile_Services {
         }
     }
 
+    async verifyTrainer(trainerId) {
+        try {
+            const trainer = await Trainer_Profile_Model.findById(trainerId);
+            if (!trainer) throw new Error("Trainer not found");
+
+            trainer.isVerified = true;
+            await trainer.save();
+
+            return trainer;
+
+        } catch (err) {
+            throw new Error(err.message);
+        }
+    }
+
 
 }
 

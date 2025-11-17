@@ -101,6 +101,26 @@ class Trainer_Profile_Controllers {
         }
     }
 
+    async verifyTrainerProfile(req, res) {
+        try {
+            const { trainer_id } = req.params;
+            const updatedTrainer = await Trainer_Profile_Services.verifyTrainer(trainer_id);
+
+            res.status(200).json({
+                success: true,
+                message: "Trainer profile verified successfully",
+                data: updatedTrainer
+            });
+
+        } catch (err) {
+            res.status(400).json({
+                success: false,
+                error: err.message
+            });
+        }
+    }
+
+
 }
 
 module.exports = new Trainer_Profile_Controllers();

@@ -14,4 +14,6 @@ router.put('/update-name/:trainer_id', Trainer_Controller.updateTrainerName);
 
 router.put('/update/:trainer_id', Trainer_Controller.updateFullTrainerProfile);
 
+router.put('/verify/:trainer_id', Trainer_Controller.verifyTrainerProfile);
+
 module.exports = router;
