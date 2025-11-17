@@ -1,5 +1,4 @@
-const Trainer_Profile_Model = require('../Models/TrainerProfile_Model');
-const Specialization_Model = require('../Models/Specialization_Model');
+const Trainer_Profile_Model = require('../Models/Model');
 
 class Trainer_Profile_Services {
 
