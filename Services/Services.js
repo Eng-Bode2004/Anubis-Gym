@@ -4,6 +4,19 @@ const PaymentMethod = require('../Models/Model');
 const PLAN_API = "https://anubis-subscriptionplan.onrender.com/api/v2/subscription_plans/";
 const TRAINEE_API = "https://anubis-traineeprofile-services.onrender.com/api/v2/trainee_profile/";
 
+async function safeGet(url) {
+    try {
+        return await axios.get(url);
+    } catch (err) {
+        if (err.response?.status === 429) {
+            console.log("⚠️ Rate limited, retrying in 1 second...");
+            await new Promise(res => setTimeout(res, 1000));
+            return axios.get(url);
+        }
+        throw err;
+    }
+}
+
 class PaymentService {
 
     static async createPayment({ traineeId, planId, payment_provider, payment_proof }) {
@@ -11,27 +24,22 @@ class PaymentService {
             throw new Error('Missing required fields');
         }
 
-        // 1) Fetch subscription plan
-        const planResponse = await axios.get(`${PLAN_API}${planId}`);
+        // 1) Fetch subscription plan safely
+        const planResponse = await safeGet(`${PLAN_API}${planId}`);
         const planData = planResponse.data?.data;
         if (!planData) throw new Error('Subscription plan not found');
 
-        // 2) Fetch trainee profile
-        const traineeResponse = await axios.get(`${TRAINEE_API}${traineeId}`);
+        // 2) Fetch trainee profile safely
+        const traineeResponse = await safeGet(`${TRAINEE_API}${traineeId}`);
         const traineeData = traineeResponse.data?.data;
         if (!traineeData) throw new Error('Trainee profile not found');
 
-        // 3) Create PaymentMethod
+        // 3) Create PaymentMethod entry
         const payment = new PaymentMethod({
             Trainee_Profile: traineeId,
             SubscriptionPlan: planId,
-
-            // Store full trainee profile
             trainee_data: traineeData,
-
-            // Store plan price
             amount: planData.price,
-
             payment_provider,
             payment_proof,
             status: 'pending'
