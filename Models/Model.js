@@ -7,6 +7,12 @@ const PaymentMethodSchema = new mongoose.Schema({
         required: true,
     },
 
+    // NEW: Save full trainee profile response
+    trainee_data: {
+        type: Object,
+        required: true,
+    },
+
     SubscriptionPlan: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'SubscriptionPlans',
@@ -17,19 +23,23 @@ const PaymentMethodSchema = new mongoose.Schema({
         type: Number,
         required: true,
     },
+
     payment_provider: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'PaymentProvider',
     },
+
     status: {
         type: String,
         enum: ['pending', 'completed', 'failed', 'refunded'],
         default: 'pending',
     },
+
     payment_proof: {
         type: String,
         required: true,
     },
+
     paid_at: {
         type: Date,
     },
