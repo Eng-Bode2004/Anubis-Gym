@@ -1,4 +1,3 @@
-// Services/PaymentProvider_Service.js
 const PaymentProvider = require('../Models/Model');
 
 class PaymentProviderService {
@@ -7,23 +6,27 @@ class PaymentProviderService {
     async createProvider(data) {
         const { name, Provider, type } = data;
 
-        // Check duplicate
+        if (!name || !Provider || !type) throw new Error("All fields are required");
+
+        // Check duplicate by name or provider ID
         const exist = await PaymentProvider.findOne({
             $or: [{ name }, { Provider }]
         });
 
         if (exist) throw new Error("Payment provider already exists");
 
-        return await PaymentProvider.create({ name, Provider, type });
+        return await PaymentProvider.create({ name, Provider, type, is_active: true });
     }
 
     // ➤ Get All Providers
     async getAllProviders() {
-        return await PaymentProvider.find();
+        return await PaymentProvider.find().sort({ createdAt: -1 });
     }
 
     // ➤ Update Provider
     async updateProvider(id, data) {
+        if (!id) throw new Error("Provider ID is required");
+
         const provider = await PaymentProvider.findById(id);
         if (!provider) throw new Error("Provider not found");
 
@@ -32,6 +35,8 @@ class PaymentProviderService {
 
     // ➤ Delete Provider
     async deleteProvider(id) {
+        if (!id) throw new Error("Provider ID is required");
+
         const provider = await PaymentProvider.findById(id);
         if (!provider) throw new Error("Provider not found");
 
@@ -41,10 +46,13 @@ class PaymentProviderService {
 
     // ➤ Activate / Deactivate provider
     async toggleStatus(id, status) {
+        if (!id) throw new Error("Provider ID is required");
+
         const provider = await PaymentProvider.findById(id);
         if (!provider) throw new Error("Provider not found");
 
-        provider.is_active = status;
+        // If status is undefined, toggle it
+        provider.is_active = typeof status === "boolean" ? status : !provider.is_active;
         await provider.save();
 
         return provider;

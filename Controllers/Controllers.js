@@ -1,4 +1,3 @@
-// Controllers/PaymentProvider_Controller.js
 const PaymentProviderService = require('../Services/Services');
 
 class PaymentProviderController {
@@ -7,12 +6,9 @@ class PaymentProviderController {
     async create(req, res) {
         try {
             const provider = await PaymentProviderService.createProvider(req.body);
-            res.status(201).json({
-                status: "success",
-                provider
-            });
+            res.status(201).json({ status: "success", data: provider });
         } catch (err) {
-            res.status(500).json({ status: "error", error: err.message });
+            res.status(400).json({ status: "error", message: err.message });
         }
     }
 
@@ -20,49 +16,44 @@ class PaymentProviderController {
     async getAll(req, res) {
         try {
             const providers = await PaymentProviderService.getAllProviders();
-            res.json({ status: "success", providers });
+            res.json({ status: "success", data: providers });
         } catch (err) {
-            res.status(500).json({ status: "error", error: err.message });
+            res.status(500).json({ status: "error", message: err.message });
         }
     }
 
     // ➤ Update
     async update(req, res) {
         try {
-            const id = req.params.id;
+            const { id } = req.params;
             const updated = await PaymentProviderService.updateProvider(id, req.body);
-
-            res.json({ status: "success", updated });
+            res.json({ status: "success", data: updated });
         } catch (err) {
-            res.status(500).json({ status: "error", error: err.message });
+            res.status(400).json({ status: "error", message: err.message });
         }
     }
 
     // ➤ Delete
     async delete(req, res) {
         try {
-            const id = req.params.id;
+            const { id } = req.params;
             const result = await PaymentProviderService.deleteProvider(id);
-            res.json({ status: "success", result });
+            res.json({ status: "success", data: result });
         } catch (err) {
-            res.status(500).json({ status: "error", error: err.message });
+            res.status(400).json({ status: "error", message: err.message });
         }
     }
 
     // ➤ Activate / Deactivate
     async toggleStatus(req, res) {
         try {
-            const id = req.params.id;
-            const { status } = req.body; // true / false
+            const { id } = req.params;
+            const { status } = req.body;
 
             const provider = await PaymentProviderService.toggleStatus(id, status);
-
-            res.json({
-                status: "success",
-                provider
-            });
+            res.json({ status: "success", data: provider });
         } catch (err) {
-            res.status(500).json({ status: "error", error: err.message });
+            res.status(400).json({ status: "error", message: err.message });
         }
     }
 }

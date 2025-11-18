@@ -1,13 +1,11 @@
-// Routes/PaymentProvider_Routes.js
 const express = require("express");
 const router = express.Router();
-
 const PaymentProviderController = require("../Controllers/Controllers");
 
 // Create
 router.post("/", PaymentProviderController.create);
 
-// Get all
+// Get All
 router.get("/", PaymentProviderController.getAll);
 
 // Update
