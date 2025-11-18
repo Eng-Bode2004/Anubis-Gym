@@ -2,7 +2,6 @@ const axios = require('axios');
 const PaymentMethod = require('../Models/Model');
 
 const PLAN_API = "https://anubis-subscriptionplan.onrender.com/api/v2/subscription_plans/";
-const TRAINEE_API = "https://anubis-traineeprofile-services.onrender.com/api/v2/trainee_profile/";
 
 class PaymentService {
 
@@ -16,10 +15,6 @@ class PaymentService {
         const planData = planResponse.data?.data;
         if (!planData) throw new Error('Subscription plan not found');
 
-        // 2) Fetch trainee profile
-        const traineeResponse = await axios.get(`${TRAINEE_API}${traineeId}`);
-        const traineeData = traineeResponse.data?.data;
-        if (!traineeData) throw new Error('Trainee profile not found');
 
         // 3) Create PaymentMethod
         const payment = new PaymentMethod({
@@ -27,7 +22,6 @@ class PaymentService {
             SubscriptionPlan: planId,
 
             // Store full trainee profile
-            trainee_data: traineeData,
 
             // Store plan price
             amount: planData.price,
