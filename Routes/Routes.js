@@ -17,4 +17,8 @@ router.delete("/:id", PaymentProviderController.delete);
 // Activate / Deactivate
 router.patch("/status/:id", PaymentProviderController.toggleStatus);
 
+// Get Only Active Providers
+router.get("/active", PaymentProviderController.getActive);
+
+
 module.exports = router;

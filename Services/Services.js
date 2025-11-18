@@ -62,6 +62,15 @@ class PaymentProviderService {
         };
     }
 
+    // ➤ Get Only Active Providers
+    async getActiveProviders() {
+        const providers = await PaymentProvider.find({ is_active: true }).sort({ createdAt: -1 });
+        return providers.map(p => ({
+            ...p.toObject(),
+            status: "active", // all are active
+        }));
+    }
+
 }
 
 module.exports = new PaymentProviderService();

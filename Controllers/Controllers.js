@@ -56,6 +56,17 @@ class PaymentProviderController {
             res.status(400).json({ status: "error", message: err.message });
         }
     }
+
+    // ➤ Get Only Active Providers
+    async getActive(req, res) {
+        try {
+            const providers = await PaymentProviderService.getActiveProviders();
+            res.json({ status: "success", data: providers });
+        } catch (err) {
+            res.status(500).json({ status: "error", message: err.message });
+        }
+    }
+
 }
 
 module.exports = new PaymentProviderController();
