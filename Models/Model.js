@@ -7,6 +7,10 @@ const PaymentMethodSchema = new mongoose.Schema({
         required: true,
     },
 
+    // NEW: Save full trainee profile response
+    trainee_data: {
+        type: Object
+    },
 
     SubscriptionPlan: {
         type: mongoose.Schema.Types.ObjectId,
