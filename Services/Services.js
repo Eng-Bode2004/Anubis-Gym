@@ -46,12 +46,9 @@ class PaymentProviderService {
 
     // ➤ Activate / Deactivate provider
     async toggleStatus(id, status) {
-        if (!id) throw new Error("Provider ID is required");
-
         const provider = await PaymentProvider.findById(id);
         if (!provider) throw new Error("Provider not found");
 
-        // If status is undefined, toggle it
         provider.is_active = typeof status === "boolean" ? status : !provider.is_active;
         await provider.save();
 
