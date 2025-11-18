@@ -2,12 +2,20 @@ require('dotenv').config();
 
 const DataBase = require('./Config/DataBase');
 const express = require('express');
+const cors = require('cors');
 
 // Set Up Port and Make Server listen To requests
 const app = express();
 const PORT = 5000;
 
 app.use(express.json()); // Middleware to parse JSON
+
+// ✅ حل مشكلة CORS
+app.use(cors({
+    origin: '*',
+    methods: ['GET', 'POST', 'PUT', 'DELETE','PATCH'],
+    credentials: true
+}));
 
 // Users Routes //
 const Specializations_Routes = require('./Routes/Routes');
