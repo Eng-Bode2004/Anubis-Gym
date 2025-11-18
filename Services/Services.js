@@ -1,5 +1,5 @@
 const axios = require('axios');
-const PaymentMethod = require('../models/Model');
+const PaymentMethod = require('../Models/Model');
 const API_BASE_URL = "https://anubis-subscriptionplan.onrender.com/api/v2/subscription_plans/";
 
 class PaymentService {
