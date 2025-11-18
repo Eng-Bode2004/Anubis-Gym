@@ -21,4 +21,4 @@ const Specialization_Schema = new mongoose.Schema({
 
 })
 
-module.exports = new mongoose.model('Specialization',Specialization_Schema);
+module.exports = mongoose.model('Specialization',Specialization_Schema);

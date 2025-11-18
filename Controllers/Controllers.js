@@ -9,7 +9,7 @@ class SpecializationController {
             res.status(201).json({
                 success: true,
                 message: "Specialization created successfully",
-                specialization,
+                specialization:specialization,
             });
 
         } catch (error) {
