@@ -1,0 +1,38 @@
+const mongoose = require('mongoose');
+
+const PaymentMethodSchema = new mongoose.Schema({
+    Trainee_Profile: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'TraineeProfile',
+        required: true,
+    },
+
+    SubscriptionPlan: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'SubscriptionPlans',
+        required: true,
+    },
+
+    amount: {
+        type: Number,
+        required: true,
+    },
+    payment_provider: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'PaymentProvider',
+    },
+    status: {
+        type: String,
+        enum: ['pending', 'completed', 'failed', 'refunded'],
+        default: 'pending',
+    },
+    payment_proof: {
+        type: String,
+        required: true,
+    },
+    paid_at: {
+        type: Date,
+    },
+}, { timestamps: true });
+
+module.exports = mongoose.model('PaymentMethod', PaymentMethodSchema);
