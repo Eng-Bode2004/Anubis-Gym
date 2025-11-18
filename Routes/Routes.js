@@ -5,16 +5,16 @@ const router = express.Router();
 const PaymentProviderController = require("../Controllers/Controllers");
 
 // Create
-router.post("/create", PaymentProviderController.create);
+router.post("/", PaymentProviderController.create);
 
 // Get all
-router.get("/all", PaymentProviderController.getAll);
+router.get("/", PaymentProviderController.getAll);
 
 // Update
-router.put("/update/:id", PaymentProviderController.update);
+router.put("/:id", PaymentProviderController.update);
 
 // Delete
-router.delete("/delete/:id", PaymentProviderController.delete);
+router.delete("/:id", PaymentProviderController.delete);
 
 // Activate / Deactivate
 router.patch("/status/:id", PaymentProviderController.toggleStatus);
