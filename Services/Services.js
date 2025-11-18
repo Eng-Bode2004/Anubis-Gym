@@ -20,7 +20,11 @@ class PaymentProviderService {
 
     // ➤ Get All Providers
     async getAllProviders() {
-        return await PaymentProvider.find().sort({ createdAt: -1 });
+        const providers = await PaymentProvider.find().sort({ createdAt: -1 });
+        return providers.map(p => ({
+            ...p.toObject(),
+            status: p.is_active ? "active" : "inactive",
+        }));
     }
 
     // ➤ Update Provider
