@@ -6,31 +6,47 @@ const PLAN_API = "https://anubis-subscriptionplan.onrender.com/api/v2/subscripti
 class PaymentService {
 
     static async createPayment({ traineeId, planId, payment_provider, payment_proof }) {
-        if (!traineeId || !planId || !payment_proof || !payment_provider) {
-            throw new Error('Missing required fields');
+        if (!traineeId || !planId || !payment_provider || !payment_proof) {
+            const error = new Error('Missing required fields');
+            error.statusCode = 400; // mark as client error
+            throw error;
         }
 
-        // 1) Fetch subscription plan
-        const planResponse = await axios.get(`${PLAN_API}${planId}`);
-        const planData = planResponse.data?.data;
-        if (!planData) throw new Error('Subscription plan not found');
+        let planData;
+        try {
+            const response = await axios.get(`${PLAN_API}${planId}`);
+            planData = response.data?.data;
+            if (!planData) {
+                const error = new Error('Subscription plan not found');
+                error.statusCode = 404;
+                throw error;
+            }
+        } catch (err) {
+            const error = new Error(
+                `Failed to fetch subscription plan: ${err.response?.data?.message || err.message}`
+            );
+            error.statusCode = err.response?.status || 502; // 502 Bad Gateway for upstream errors
+            throw error;
+        }
 
-
-
-        // 3) Create PaymentMethod
+        // create payment
         const payment = new PaymentMethod({
             Trainee_Profile: traineeId,
             SubscriptionPlan: planId,
-
-            // Store plan price
             amount: planData.price,
-
             payment_provider,
             payment_proof,
             status: 'pending'
         });
 
-        await payment.save();
+        try {
+            await payment.save();
+        } catch (err) {
+            const error = new Error('Failed to save payment: ' + err.message);
+            error.statusCode = 500;
+            throw error;
+        }
+
         return payment;
     }
 

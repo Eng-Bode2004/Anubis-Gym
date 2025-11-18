@@ -1,16 +1,18 @@
 const PaymentService = require('../Services/Services');
 
 class PaymentController {
-    // Create payment
+
     static async create(req, res) {
         try {
             const { traineeId, planId, payment_provider, payment_proof } = req.body;
             const payment = await PaymentService.createPayment({ traineeId, planId, payment_provider, payment_proof });
             res.status(201).json({ message: 'Payment created successfully', payment });
         } catch (err) {
-            res.status(400).json({ message: err.message });
+            console.error(err);
+            res.status(err.statusCode || 500).json({ message: err.message });
         }
     }
+
 
     // Complete payment
     static async complete(req, res) {
