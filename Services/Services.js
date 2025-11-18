@@ -15,6 +15,10 @@ class PaymentService {
         const planData = planResponse.data?.data;
         if (!planData) throw new Error('Subscription plan not found');
 
+        // // 2) Fetch trainee profile
+        // const traineeResponse = await axios.get(`${TRAINEE_API}${traineeId}`);
+        // const traineeData = traineeResponse.data?.data;
+        // if (!traineeData) throw new Error('Trainee profile not found');
 
         // 3) Create PaymentMethod
         const payment = new PaymentMethod({
@@ -22,6 +26,7 @@ class PaymentService {
             SubscriptionPlan: planId,
 
             // Store full trainee profile
+            // trainee_data: traineeData,
 
             // Store plan price
             amount: planData.price,
