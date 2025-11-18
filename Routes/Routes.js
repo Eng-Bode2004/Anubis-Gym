@@ -1,5 +1,5 @@
 const express = require('express');
-const SpecializationController = require('../Controllers/SpecializationController');
+const SpecializationController = require('../Controllers/Controllers');
 
 const router = express.Router();
 
