@@ -49,11 +49,15 @@ class PaymentProviderService {
         const provider = await PaymentProvider.findById(id);
         if (!provider) throw new Error("Provider not found");
 
-        provider.is_active = typeof status === "boolean" ? status : !provider.is_active;
+        provider.is_active = status;
         await provider.save();
 
-        return provider;
+        return {
+            ...provider.toObject(),
+            status: provider.is_active ? "active" : "inactive",
+        };
     }
+
 }
 
 module.exports = new PaymentProviderService();
