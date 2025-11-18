@@ -4,15 +4,18 @@ const PaymentMethod = require('../Models/Model');
 const PLAN_API = "https://anubis-subscriptionplan.onrender.com/api/v2/subscription_plans/";
 const TRAINEE_API = "https://anubis-traineeprofile-services.onrender.com/api/v2/trainee_profile/";
 
-async function safeGet(url) {
+async function safeGet(url, retries = 5, delay = 1000) {
     try {
         return await axios.get(url);
     } catch (err) {
-        if (err.response?.status === 429) {
-            console.log("⚠️ Rate limited, retrying in 1 second...");
-            await new Promise(res => setTimeout(res, 1000));
-            return axios.get(url);
+        if (err.response?.status === 429 && retries > 0) {
+            console.log(`⚠️ 429 rate limit. Retrying in ${delay}ms... (${retries} retries left)`);
+
+            await new Promise(res => setTimeout(res, delay));
+
+            return safeGet(url, retries - 1, delay * 2); // exponential backoff
         }
+
         throw err;
     }
 }
