@@ -1,85 +1,47 @@
-const Specialization_Schema = require('../Models/Model')
-const mongoose = require("mongoose");
+const SpecializationModel = require('../Models/Model');
 
 class SpecializationService {
 
-    async createSpecialization(SpecializationData) {
-        try {
+    async createSpecialization(data) {
+        const { name, description, imageUrl } = data;
 
-            const {name,description,imageUrl}= SpecializationData
-
-            // Check if Role exists
-            const existSpecialization = await Specialization_Schema.findOne({ name });
-
-            if(existSpecialization) {
-                throw new Error("Specialization already exist!");
-            }
-
-            // Creation Role Process
-            const newSpecialization = await Specialization_Schema.create({
-                name:name,
-                description:description,
-                imageUrl:imageUrl,
-            })
-
-            return newSpecialization;
-
-
-
-
-        }catch (error) {
-            throw new Error(error);
+        if (!name || !imageUrl) {
+            throw new Error("Name and imageUrl are required");
         }
-    }
 
+        const exists = await SpecializationModel.findOne({ name });
+        if (exists) throw new Error("Specialization already exists");
+
+        const specialization = await SpecializationModel.create({ name, description, imageUrl });
+        return specialization;
+    }
 
     async getAllSpecializations() {
-        try {
-            return await Specialization_Schema.find();
-        } catch (error) {
-            throw new Error(error.message);
-        }
+        return await SpecializationModel.find();
     }
 
-    async getSpecializationById(SpecializationId) {
-        try {
-            const Specialization = await Specialization_Schema.findById(SpecializationId);
-            if (!Specialization) throw new Error("Role not found");
-            return Specialization;
-        } catch (error) {
-            throw new Error(error.message);
-        }
+    async getSpecializationById(id) {
+        const specialization = await SpecializationModel.findById(id);
+        if (!specialization) throw new Error("Specialization not found");
+        return specialization;
     }
 
-    async deleteSpecialization(SpecializationId) {
-        try {
-            const deleted = await Specialization_Schema.findByIdAndDelete(SpecializationId);
-            if (!deleted) throw new Error("Role not found");
-            return deleted;
-        } catch (error) {
-            throw new Error(error.message);
-        }
+    async updateSpecialization(id, data) {
+        const specialization = await SpecializationModel.findById(id);
+        if (!specialization) throw new Error("Specialization not found");
+
+        specialization.name = data.name || specialization.name;
+        specialization.description = data.description || specialization.description;
+        specialization.imageUrl = data.imageUrl || specialization.imageUrl;
+
+        return await specialization.save();
     }
 
-
-    async updateSpecialization(SpecializationId, updatedData) {
-        try {
-            const Specialization = await Specialization_Schema.findById(SpecializationId);
-            if (!Specialization) throw new Error("Specialization not found");
-
-            // Update allowed fields
-            Specialization.name = updatedData.name || Specialization.name;
-            Specialization.description = updatedData.description || Specialization.description;
-            Specialization.imageUrl = updatedData.imageUrl || Specialization.imageUrl;
-
-            const updatedSpecialization = await Specialization.save();
-            return updatedSpecialization;
-
-        } catch (error) {
-            throw new Error(error.message);
-        }
+    async deleteSpecialization(id) {
+        const deleted = await SpecializationModel.findByIdAndDelete(id);
+        if (!deleted) throw new Error("Specialization not found");
+        return deleted;
     }
-
 }
 
-module.exports = new SpecializationService;
+module.exports = new SpecializationService();

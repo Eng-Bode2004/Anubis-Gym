@@ -1,24 +1,9 @@
-const mongoose =require('mongoose')
+const mongoose = require('mongoose');
 
-const Specialization_Schema = new mongoose.Schema({
+const SpecializationSchema = new mongoose.Schema({
+    name: { type: String, required: true, unique: true },
+    description: { type: String },
+    imageUrl: { type: String, required: true }
+}, { timestamps: true });
 
-
-    name:{
-        type:String,
-        required:true,
-        unique:true,
-    },
-
-
-    description:{
-        type:String,
-    },
-
-    imageUrl:{
-        type:String,
-    }
-
-
-})
-
-module.exports = mongoose.model('Specialization',Specialization_Schema);
+module.exports = mongoose.model('Specialization', SpecializationSchema);
