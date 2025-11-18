@@ -10,35 +10,38 @@ class PaymentService {
             throw new Error('Missing required fields');
         }
 
-        // 1) Fetch subscription plan
-        const planResponse = await axios.get(`${PLAN_API}${planId}`);
-        const planData = planResponse.data?.data;
+        if (!mongoose.Types.ObjectId.isValid(traineeId))
+            throw new Error('Invalid trainee ID');
+        if (!mongoose.Types.ObjectId.isValid(planId))
+            throw new Error('Invalid plan ID');
+
+        let planData;
+        try {
+            const planResponse = await axios.get(`${PLAN_API}${planId}`);
+            planData = planResponse.data?.data;
+        } catch (err) {
+            throw new Error('Failed to fetch subscription plan: ' + err.message);
+        }
         if (!planData) throw new Error('Subscription plan not found');
 
-        // // 2) Fetch trainee profile
-        // const traineeResponse = await axios.get(`${TRAINEE_API}${traineeId}`);
-        // const traineeData = traineeResponse.data?.data;
-        // if (!traineeData) throw new Error('Trainee profile not found');
-
-        // 3) Create PaymentMethod
         const payment = new PaymentMethod({
             Trainee_Profile: traineeId,
             SubscriptionPlan: planId,
-
-            // Store full trainee profile
-            // trainee_data: traineeData,
-
-            // Store plan price
             amount: planData.price,
-
             payment_provider,
             payment_proof,
             status: 'pending'
         });
 
-        await payment.save();
+        try {
+            await payment.save();
+        } catch (err) {
+            throw new Error('Failed to save payment: ' + err.message);
+        }
+
         return payment;
     }
+
 
     static async completePayment(paymentId) {
         const payment = await PaymentMethod.findById(paymentId);
