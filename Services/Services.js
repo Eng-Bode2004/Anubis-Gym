@@ -1,6 +1,6 @@
 const axios = require('axios');
 const PaymentMethod = require('../Models/Model');
-const mongoose = require('mongoose');
+
 const PLAN_API = "https://anubis-subscriptionplan.onrender.com/api/v2/subscription_plans/";
 
 class PaymentService {
@@ -10,38 +10,29 @@ class PaymentService {
             throw new Error('Missing required fields');
         }
 
-        if (!mongoose.Types.ObjectId.isValid(traineeId))
-            throw new Error('Invalid trainee ID');
-        if (!mongoose.Types.ObjectId.isValid(planId))
-            throw new Error('Invalid plan ID');
-
-        let planData;
-        try {
-            const planResponse = await axios.get(`${PLAN_API}${planId}`);
-            planData = planResponse.data?.data;
-        } catch (err) {
-            throw new Error('Failed to fetch subscription plan: ' + err.message);
-        }
+        // 1) Fetch subscription plan
+        const planResponse = await axios.get(`${PLAN_API}${planId}`);
+        const planData = planResponse.data?.data;
         if (!planData) throw new Error('Subscription plan not found');
 
+
+
+        // 3) Create PaymentMethod
         const payment = new PaymentMethod({
             Trainee_Profile: traineeId,
             SubscriptionPlan: planId,
+
+            // Store plan price
             amount: planData.price,
+
             payment_provider,
             payment_proof,
             status: 'pending'
         });
 
-        try {
-            await payment.save();
-        } catch (err) {
-            throw new Error('Failed to save payment: ' + err.message);
-        }
-
+        await payment.save();
         return payment;
     }
-
 
     static async completePayment(paymentId) {
         const payment = await PaymentMethod.findById(paymentId);
