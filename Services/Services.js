@@ -6,15 +6,17 @@ class PaymentService {
 
     // Create payment
     static async createPayment({ traineeId, planId, payment_provider, payment_proof }) {
-        if (!traineeId || !planId || !payment_proof ||!payment_provider) {
+        if (!traineeId || !planId || !payment_proof || !payment_provider) {
             throw new Error('Missing required fields');
         }
 
         // Fetch subscription plan from API
         const response = await axios.get(`${API_BASE_URL}${planId}`);
-        const planData = response.data;
 
-        if (!planData || !planData.price) {
+        // Correct location of the plan data
+        const planData = response.data?.data;
+
+        if (!planData) {
             throw new Error('Subscription plan not found');
         }
 
@@ -22,7 +24,7 @@ class PaymentService {
         const payment = new PaymentMethod({
             Trainee_Profile: traineeId,
             SubscriptionPlan: planId,
-            amount: planData.price,
+            amount: planData.price,   // <-- FIXED
             payment_provider,
             payment_proof,
             status: 'pending'
@@ -31,6 +33,7 @@ class PaymentService {
         await payment.save();
         return payment;
     }
+
 
     // Complete payment
     static async completePayment(paymentId) {
