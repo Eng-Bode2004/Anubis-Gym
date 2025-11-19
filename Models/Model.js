@@ -36,7 +36,6 @@ const PaymentMethodSchema = new mongoose.Schema({
 
     payment_proof: {
         type: String,
-        required: true,
     },
 
     paid_at: {
