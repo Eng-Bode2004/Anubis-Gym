@@ -33,7 +33,7 @@ const UserMembershipSchema = new mongoose.Schema({
     status: {
         type: String,
         enum: ['active','cancelled','expired','suspended','pending'],
-        default: 'pending'
+        default: 'active'
     },
 
     Days_left:{
