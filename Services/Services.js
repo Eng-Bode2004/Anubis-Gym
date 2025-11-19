@@ -71,6 +71,21 @@ class PaymentProviderService {
         }));
     }
 
+    // ➤ Get Provider by ID
+    async getProviderById(id) {
+        if (!id) throw new Error("Provider ID is required");
+
+        const provider = await PaymentProvider.findById(id);
+
+        if (!provider) throw new Error("Payment provider not found");
+
+        return {
+            ...provider.toObject(),
+            status: provider.is_active ? "active" : "inactive"
+        };
+    }
+
+
 }
 
 module.exports = new PaymentProviderService();

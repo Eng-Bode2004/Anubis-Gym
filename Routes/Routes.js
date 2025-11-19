@@ -20,5 +20,7 @@ router.patch("/status/:id", PaymentProviderController.toggleStatus);
 // Get Only Active Providers
 router.get("/active", PaymentProviderController.getActive);
 
+// Get Provider by ID
+router.get("/:id", PaymentProviderController.getById);
 
 module.exports = router;

@@ -67,6 +67,18 @@ class PaymentProviderController {
         }
     }
 
+    // ➤ Get Provider by ID
+    async getById(req, res) {
+        try {
+            const { id } = req.params;
+            const provider = await PaymentProviderService.getProviderById(id);
+            res.json({ status: "success", data: provider });
+        } catch (err) {
+            res.status(400).json({ status: "error", message: err.message });
+        }
+    }
+
+
 }
 
 module.exports = new PaymentProviderController();
