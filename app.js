@@ -14,7 +14,7 @@ app.use(express.json()); // Middleware to parse JSON
 
 // ✅ حل مشكلة CORS
 app.use(cors({
-    origin: '*',
+    origin: 'http://localhost:8090',
     methods: ['GET', 'POST', 'PUT', 'DELETE'],
     credentials: true
 }));
