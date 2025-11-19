@@ -43,6 +43,21 @@ class UserMembershipController {
         await UserMembershipService.delete(req.params.id);
         res.json({ success: true, message: "Membership deleted" });
     }
+
+    async getByTrainee(req, res) {
+        try {
+            const traineeId = req.params.traineeId;
+            const memberships = await UserMembershipService.getByTraineeId(traineeId);
+
+            if (!memberships || memberships.length === 0) {
+                return res.status(404).json({ success: false, message: "No memberships found for this trainee" });
+            }
+
+            res.json({ success: true, data: memberships });
+        } catch (err) {
+            res.status(400).json({ success: false, message: err.message });
+        }
+    }
 }
 
 module.exports = new UserMembershipController();

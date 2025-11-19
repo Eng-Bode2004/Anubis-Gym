@@ -13,4 +13,5 @@ router.put("/reduce-session/:id", UserMembershipController.reduceSession);
 // Delete membership
 router.delete("/:id", UserMembershipController.delete);
 
+router.get("/trainee/:traineeId", UserMembershipController.getByTrainee);
 module.exports = router;

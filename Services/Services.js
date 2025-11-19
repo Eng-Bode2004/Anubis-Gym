@@ -86,6 +86,29 @@ class UserMembershipService {
     delete(id) {
         return UserMembership.findByIdAndDelete(id);
     }
+
+    async getByTraineeId(traineeId) {
+        if (!traineeId) throw new Error("Trainee ID is required");
+
+        // Find memberships for this trainee
+        const memberships = await UserMembership.find({ Trainee_Profile: traineeId });
+
+        // Fetch subscription plan data for each membership
+        const enrichedMemberships = await Promise.all(
+            memberships.map(async (m) => {
+                try {
+                    const planRes = await axios.get(`${PLAN_API}${m.SubscriptionPlan}`);
+                    const planData = planRes.data?.data || {};
+                    m.SubscriptionPlanData = planData;
+                } catch (err) {
+                    m.SubscriptionPlanData = {}; // fallback
+                }
+                return m;
+            })
+        );
+
+        return enrichedMemberships;
+    }
 }
 
 module.exports = new UserMembershipService();
