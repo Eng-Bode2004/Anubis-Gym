@@ -1,5 +1,8 @@
 const UserMembershipService = require("../Services/Services");
 
+const TRAINEE_API = "https://anubis-traineeprofile-services.onrender.com/api/v2/trainee_profile/";
+const axios = require("axios");
+
 class UserMembershipController {
 
     async create(req, res) {
@@ -47,6 +50,16 @@ class UserMembershipController {
     async getByTrainee(req, res) {
         try {
             const traineeId = req.params.traineeId;
+
+            // Check if trainee exists via external API
+            let trainee;
+            try {
+                const response = await axios.get(`${TRAINEE_API}${traineeId}`);
+                trainee = response.data?.data;
+            } catch (err) {
+                return res.status(404).json({ success: false, message: "Trainee not found" });
+            }
+
             const memberships = await UserMembershipService.getByTraineeId(traineeId);
 
             if (!memberships || memberships.length === 0) {
