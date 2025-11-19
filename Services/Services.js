@@ -36,7 +36,7 @@ class UserMembershipService {
             Payment_Method,
             start_date,
             end_date,
-            days_left: duration_days,
+            Days_left: duration_days,
             sessions_left: sessions
         });
 
