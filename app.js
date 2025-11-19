@@ -12,8 +12,8 @@ const PORT = 5000;
 app.use(express.json()); // Middleware to parse JSON
 
 // Users Routes //
-const PaymentMethods_Routes = require('./Routes/Routes');
-app.use('/api/v3/payment-method', PaymentMethods_Routes);
+const UserMembership_Routes = require('./Routes/Routes');
+app.use('/api/v3/user-membership', UserMembership_Routes);
 
 // ✅ حل مشكلة CORS
 app.use(cors({
